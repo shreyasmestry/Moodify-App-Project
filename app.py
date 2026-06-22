@@ -67,8 +67,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 2. Header UI
-st.markdown("<h1 style='color: #FF0000; text-align: center;'>🎵 Moodify</h1>", unsafe_allowed_html=True)
-st.markdown("<p style='text-align: center; color: #B3B3B3;'>Powered completely free by YouTube Music</p>", unsafe_allowed_html=True)
+st.markdown("<h1 style='color: #FF0000; text-align: center;'>🎵 Moodify</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #B3B3B3;'>Powered completely free by YouTube Music</p>", unsafe_allow_html=True)
 st.write("---")
 
 # 3. Input Area
@@ -98,7 +98,7 @@ if submit_button:
             search_query = "lofi chill ambient relaxed music playlist"
             status_msg = "☕ Finding a relaxed, mellow soundtrack..."
             
-        st.markdown(f"<p style='color: #FF0000; font-weight: bold;'>{status_msg}</p>", unsafe_allowed_html=True)
+        st.markdown(f"<p style='color: #FF0000; font-weight: bold;'>{status_msg}</p>", unsafe_allow_html=True)
         
         # Fetching playlists from YouTube Music
         try:
@@ -128,7 +128,7 @@ if submit_button:
                     <a href="{web_url}" target="_blank" class="playlist-title">📌 {title}</a>
                     <div class="playlist-meta">Curated by {author}</div>
                 </div>
-                """, unsafe_allowed_html=True)
+                """, unsafe_allow_html=True)
                 
                 # Dynamic Player Embed
                 # Streamlit automatically generates a media block if given a valid playlist link format
