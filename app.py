@@ -10,7 +10,7 @@ def get_yt_client():
 yt = get_yt_client()
 
 # 1. Page Configuration
-st.set_page_config(page_title="Spotify", page_icon="🎵", layout="wide")
+st.set_page_config(page_title="Moodify", page_icon="🎵", layout="wide")
 
 # 2. Advanced CSS Injector for Core Spotify Layout & Theming
 st.markdown("""
@@ -139,7 +139,8 @@ st.markdown("""
 
 # ==================== NAVIGATION PANEL (SIDEBAR) ====================
 with st.sidebar:
-    st.markdown("<h2 style='color: #ffffff; padding: 10px 16px; font-size: 24px;'>🎵 Spotify</h2>", unsafe_allow_html=True)
+    # Changed the text back to Moodify but kept the clean font styling!
+    st.markdown("<h2 style='color: #1DB954; padding: 10px 16px; font-size: 24px;'>⚡ Moodify</h2>", unsafe_allow_html=True)
     st.write("")
     
     # Simple Radio Selector designed to simulate a real platform navigation list
