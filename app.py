@@ -18,6 +18,11 @@ st.markdown("""
         background-color: #121212;
         color: #FFFFFF;
     }
+
+    /* Fixes the white bar at the top */
+    header, [data-testid="stHeader"] {
+        background-color: rgba(0, 0, 0, 0) !important;
+    }
     .stTextInput input {
         background-color: #242424 !important;
         color: #FFFFFF !important;
