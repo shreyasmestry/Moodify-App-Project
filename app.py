@@ -14,15 +14,18 @@ st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="centered")
 
 st.markdown("""
     <style>
+    /* Main app background and text color */
     .stApp {
         background-color: #121212;
         color: #FFFFFF;
     }
-
+    
     /* Fixes the white bar at the top */
     header, [data-testid="stHeader"] {
         background-color: rgba(0, 0, 0, 0) !important;
     }
+    
+    /* Input field styling */
     .stTextInput input {
         background-color: #242424 !important;
         color: #FFFFFF !important;
@@ -30,6 +33,8 @@ st.markdown("""
         border-radius: 50px !important;
         padding-left: 20px !important;
     }
+    
+    /* Green Spotify-like button styling */
     .stButton>button {
         background-color: #1DB954 !important;
         color: #FFFFFF !important;
@@ -43,6 +48,8 @@ st.markdown("""
         transform: scale(1.04);
         background-color: #1ED760 !important;
     }
+    
+    /* Playlists Container Box */
     .playlist-card {
         background-color: #181818;
         border-radius: 8px;
@@ -61,6 +68,7 @@ st.markdown("""
         font-size: 14px;
         margin-bottom: 10px;
     }
+    
     /* Simple tab design alignment */
     .stTabs [data-baseweb="tab-list"] {
         gap: 10px;
@@ -78,7 +86,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 2. Header UI
+# 2. Header UI (Text-based Green Logo)
 st.markdown("<h1 style='color: #1DB954; text-align: center; font-size: 42px;'>⚡ MOODIFY</h1>", unsafe_allow_html=True)
 st.write("---")
 
@@ -115,71 +123,4 @@ with tab1:
                     author = playlist.get('author', 'YouTube Music')
                     clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
                     
-                    st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">📌 {title}</a><div class="playlist-meta">Curated by {author}</div></div>', unsafe_allow_html=True)
-                    st.video(f"https://www.youtube.com/playlist?list={clean_id}")
-            except Exception as e:
-                st.error(f"Error: {e}")
-
-# ==================== TAB 2: SEARCH TRACKS/MOVIES ====================
-with tab2:
-    st.subheader("Find Songs by Name or Movie")
-    search_term = st.text_input("Enter song title or movie name (e.g., 'Tum Hi Ho' or 'Animal movie'):", key="track_input")
-    if st.button("Search Track", key="track_btn"):
-        if search_term.strip():
-            try:
-                songs = yt.search(search_term, filter="songs", limit=3)
-                for song in songs:
-                    artists = ", ".join([a['name'] for a in song.get('artists', [])])
-                    album = song.get('album', {}).get('name', 'Single')
-                    video_id = song.get('videoId')
-                    
-                    st.markdown(f'<div class="playlist-card"><span class="playlist-title">🎵 {song["title"]}</span><div class="playlist-meta">Artist: {artists} | Album/Movie: {album}</div></div>', unsafe_allow_html=True)
-                    if video_id:
-                        st.video(f"https://www.youtube.com/watch?v={video_id}")
-            except Exception as e:
-                st.error(f"Error searching track: {e}")
-
-# ==================== TAB 3: ARTIST SEARCH ====================
-with tab3:
-    st.subheader("Explore by Artist")
-    artist_term = st.text_input("Enter artist name (e.g., 'Arijit Singh', 'Diljit Dosanjh'):", key="artist_input")
-    if st.button("Find Artist Tracks", key="artist_btn"):
-        if artist_term.strip():
-            try:
-                # Appends "songs" to query to hit exact top arrays quickly
-                artist_songs = yt.search(f"{artist_term} songs", filter="songs", limit=3)
-                for song in artist_songs:
-                    video_id = song.get('videoId')
-                    st.markdown(f'<div class="playlist-card"><span class="playlist-title">🎤 {song["title"]}</span><div class="playlist-meta">Album: {song.get("album", {}).get("name", "Unknown")}</div></div>', unsafe_allow_html=True)
-                    if video_id:
-                        st.video(f"https://www.youtube.com/watch?v={video_id}")
-            except Exception as e:
-                st.error(f"Error fetching artist songs: {e}")
-
-# ==================== TAB 4: INDIAN TRENDING ====================
-with tab4:
-    st.subheader("🔥 Top Indian Language Trending Hits")
-    st.write("Quick access to top trending community music clusters:")
-    
-    languages = {
-        "Hindi / Bollywood": "Hindi Trending Hits New Songs Playlist",
-        "Punjabi": "Punjabi Latest Hits Trending Playlist",
-        "Tamil": "Tamil Trending New Songs Playlist",
-        "Telugu": "Telugu Latest Hits Trending Playlist"
-    }
-    
-    selected_lang = st.selectbox("Choose a language:", list(languages.keys()))
-    
-    if st.button("Load Trending Playlist", key="trend_btn"):
-        try:
-            trend_results = yt.search(languages[selected_lang], filter="playlists", limit=1)
-            if trend_results:
-                playlist = trend_results[0]
-                clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
-                
-                st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">🔥 Trending {selected_lang} Mix</a></div>', unsafe_allow_html=True)
-                st.video(f"https://www.youtube.com/playlist?list={clean_id}")
-            else:
-                st.info("Could not fetch the chart right now. Try again shortly!")
-        except Exception as e:
-            st.error(f"Error loading charts: {e}")
+                    st.markdown(f'<div
