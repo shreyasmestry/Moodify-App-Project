@@ -12,7 +12,7 @@ yt = get_yt_client()
 # 1. Page Configuration
 st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="wide")
 
-# 2. Complete CSS Fixes
+# 2. Hardcore CSS Reset (Collapses all structural wrapper blocks to 0)
 st.markdown("""
     <style>
     /* Absolute global theme properties */
@@ -22,30 +22,38 @@ st.markdown("""
         font-family: "Circular Sp", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     
-    /* FIX: Completely nukes the random massive black box and elements */
+    /* 1. Nuke the native headers, decoration lines, and toolbars */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], #stDecoration {
         display: none !important;
         visibility: hidden !important;
         height: 0px !important;
     }
     
-    /* FIX: Forces Streamlit's inner main content container block to collapse its top gap */
-    [data-testid="stMainSpaceTrigger"] {
+    /* 2. Flatten all parent container elements and spacing triggers above our main box */
+    [data-testid="stMainSpaceTrigger"], 
+    .stMainBlockContainer > div:first-child,
+    [data-testid="stVerticalBlock"] > div:first-child {
         display: none !important;
+        height: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
     }
     
-    .stMainBlockContainer, [data-testid="stAppViewBlockContainer"] {
+    /* 3. Strip all top padding from the main wrapper pages completely */
+    .stMainBlockContainer, 
+    [data-testid="stAppViewBlockContainer"], 
+    .block-container {
         padding-top: 0px !important;
         margin-top: 0px !important;
+        padding-bottom: 0px !important;
     }
     
-    /* Custom Sidebar Left Panel Wrapper Overrides */
+    /* Custom Sidebar Left Panel Overrides */
     [data-testid="stSidebar"] {
         background-color: #000000 !important;
         border-right: 1px solid #121212;
     }
     
-    /* Hide default streamlit navigational system layout elements */
     [data-testid="stSidebarNav"] { display: none; } 
 
     /* Brightens the unselected navigation label radio buttons so they are NOT camouflaged */
@@ -66,8 +74,8 @@ st.markdown("""
         background-color: #121212 !important;
         border-radius: 8px;
         padding: 30px;
-        min-height: 90vh;
-        margin-top: 0px !important;
+        min-height: 95vh;
+        margin-top: 10px !important; /* Tiny margin just to keep it looking clean below the edge */
     }
 
     /* Spotify pill inputs */
@@ -145,7 +153,7 @@ with st.sidebar:
 st.markdown('<div class="main-panel-box">', unsafe_allow_html=True)
 
 if nav_option == "🧠 Mood AI":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🧠 Mood AI Dashboard</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800; margin-bottom: 20px;'>🧠 Mood AI Dashboard</h1>", unsafe_allow_html=True)
     user_input = st.text_input("How are you feeling right now?", key="mood_input", placeholder="What's your mood vibe?")
     
     if st.button("Get Music", key="mood_btn"):
@@ -180,7 +188,7 @@ if nav_option == "🧠 Mood AI":
                 st.error(f"Error: {e}")
 
 elif nav_option == "🔍 Search Tracks/Movies":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🔍 Search Tracks & Movies</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800; margin-bottom: 20px;'>🔍 Search Tracks & Movies</h1>", unsafe_allow_html=True)
     search_term = st.text_input("Search for songs or movies...", key="track_input", placeholder="What do you want to listen to?")
     
     if st.button("Search Track", key="track_btn"):
@@ -199,7 +207,7 @@ elif nav_option == "🔍 Search Tracks/Movies":
                 st.error(f"Error: {e}")
 
 elif nav_option == "🧑‍🎤 Artist Search":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🧑‍🎤 Artist Profiles</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800; margin-bottom: 20px;'>🧑‍🎤 Artist Profiles</h1>", unsafe_allow_html=True)
     artist_term = st.text_input("Search for an artist...", key="artist_input", placeholder="Enter artist name...")
     
     if st.button("Find Artist Tracks", key="artist_btn"):
@@ -215,7 +223,7 @@ elif nav_option == "🧑‍🎤 Artist Search":
                 st.error(f"Error: {e}")
 
 elif nav_option == "🔥 Indian Trending":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🔥 Hot Hits India</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800; margin-bottom: 20px;'>🔥 Hot Hits India</h1>", unsafe_allow_html=True)
     
     languages = {
         "Hindi / Bollywood": "Trending Music Hindi YouTube Music",
