@@ -10,9 +10,9 @@ def get_yt_client():
 yt = get_yt_client()
 
 # 1. Page Configuration
-st.set_page_config(page_title="Moodify", page_icon="🎵", layout="wide")
+st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="wide")
 
-# 2. Advanced CSS Injector for Core Spotify Layout & Theming
+# 2. Complete CSS Fixes (Resolves Contrast, Sizes, and the Hidden Box Layouts)
 st.markdown("""
     <style>
     /* Absolute global theme properties */
@@ -22,7 +22,7 @@ st.markdown("""
         font-family: "Circular Sp", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     
-    /* Clean up native Streamlit decorative overlays & toolbars */
+    /* FIX: Completely nukes the random massive black box container layout at top */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], #stDecoration {
         display: none !important;
         visibility: hidden !important;
@@ -33,19 +33,31 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background-color: #000000 !important;
         border-right: 1px solid #121212;
-        width: 260px !important;
     }
     
-    /* Main Content Container Cards background padding layout matching Spotify main panel */
-    [data-testid="stSidebarNav"] { display: none; } /* Hide default nav items */
+    /* Hide default streamlit navigational system layout elements */
+    [data-testid="stSidebarNav"] { display: none; } 
+
+    /* FIX: Brightens the unselected navigation label radio buttons so they are NOT camouflaged */
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {
+        color: #E5E5E5 !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        padding: 6px 0px !important;
+    }
     
+    /* Focus state indicator for selected item text */
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] [data-checked="true"] label {
+        color: #1DB954 !important;
+    }
+
+    /* Main Content Area Container Adjustments */
     .main-panel-box {
-        background: linear-gradient(to bottom, #222222 0%, #121212 40%) !important;
         background-color: #121212 !important;
         border-radius: 8px;
-        padding: 24px;
-        min-height: 85vh;
-        margin-top: -30px;
+        padding: 30px;
+        min-height: 90vh;
+        margin-top: -40px;
     }
 
     /* Spotify pill inputs */
@@ -56,19 +68,6 @@ st.markdown("""
         border-radius: 50px !important;
         padding: 12px 20px !important;
         font-size: 14px !important;
-        transition: border 0.2s ease-in-out;
-    }
-    .stTextInput input:focus {
-        border: 1px solid #ffffff !important;
-        box-shadow: none !important;
-    }
-    
-    /* Select Dropdowns */
-    div[data-baseweb="select"] > div {
-        background-color: #2a2a2a !important;
-        border-radius: 4px !important;
-        border: none !important;
-        color: #fff !important;
     }
     
     /* True Spotify Green Buttons */
@@ -79,31 +78,21 @@ st.markdown("""
         border: none !important;
         padding: 12px 32px !important;
         font-weight: bold !important;
-        font-size: 14px !important;
-        letter-spacing: 1px;
         text-transform: uppercase;
-        transition: transform 0.1s ease, background-color 0.2s ease;
+        transition: transform 0.1s ease;
     }
     .stButton>button:hover {
         background-color: #1ED760 !important;
         transform: scale(1.04);
         color: #000000 !important;
     }
-    .stButton>button:active {
-        transform: scale(0.98);
-    }
     
-    /* Spotify Track / Album Container Row Cards */
+    /* Track Album Row Cards Container elements */
     .playlist-card {
         background-color: #181818;
         border-radius: 6px;
         padding: 16px;
         margin-bottom: 12px;
-        border: 1px solid transparent;
-        transition: background-color 0.3s ease;
-    }
-    .playlist-card:hover {
-        background-color: #282828;
     }
     .playlist-title {
         color: #FFFFFF !important;
@@ -111,39 +100,28 @@ st.markdown("""
         font-weight: 700;
         text-decoration: none !important;
     }
-    .playlist-title:hover {
-        color: #1DB954 !important;
-    }
     .playlist-meta {
         color: #b3b3b3;
         font-size: 13px;
-        margin-top: 4px;
     }
-    
-    /* Custom Static Sidebar Links Styling */
     .sidebar-link {
         display: flex;
         align-items: center;
-        padding: 12px 16px;
+        padding: 8px 0px;
         color: #b3b3b3;
         font-weight: bold;
         text-decoration: none;
         font-size: 14px;
-        transition: color 0.2s ease;
-    }
-    .sidebar-link:hover {
-        color: #ffffff;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ==================== NAVIGATION PANEL (SIDEBAR) ====================
 with st.sidebar:
-    # Changed the text back to Moodify but kept the clean font styling!
-    st.markdown("<h2 style='color: #1DB954; padding: 10px 16px; font-size: 24px;'>⚡ Moodify</h2>", unsafe_allow_html=True)
-    st.write("")
+    # FIX: Made the site logo significantly bigger (font-size raised to 46px)
+    st.markdown("<h1 style='color: #1DB954; padding: 15px 0px; font-size: 46px; font-weight: 900; margin-bottom: 10px;'>⚡ Moodify</h1>", unsafe_allow_html=True)
     
-    # Simple Radio Selector designed to simulate a real platform navigation list
+    # Navigation Radio Selection Panel
     nav_option = st.radio(
         "Navigation",
         ["🧠 Mood AI", "🔍 Search Tracks/Movies", "🧑‍🎤 Artist Search", "🔥 Indian Trending"],
@@ -151,17 +129,17 @@ with st.sidebar:
     )
     
     st.write("---")
-    st.markdown("<p style='color: #b3b3b3; font-size: 11px; padding: 0 16px;'>YOUR LIBRARY</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #b3b3b3; font-size: 11px; letter-spacing: 1px;'>YOUR LIBRARY</p>", unsafe_allow_html=True)
     st.markdown("<a class='sidebar-link'>➕ Create Playlist</a>", unsafe_allow_html=True)
     st.markdown("<a class='sidebar-link'>❤️ Liked Songs</a>", unsafe_allow_html=True)
 
 # ==================== MAIN PANEL WINDOW ====================
 st.markdown('<div class="main-panel-box">', unsafe_allow_html=True)
 
-# Dynamic view injection depending on what sidebar link is active
+# FIX: Title normalized directly to "Mood AI Dashboard" to prevent layout mismatch text
 if nav_option == "🧠 Mood AI":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>Vibe Check Recommender</h1>", unsafe_allow_html=True)
-    user_input = st.text_input("How are you feeling right now?", key="mood_input", placeholder="What's your mood?")
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🧠 Mood AI Dashboard</h1>", unsafe_allow_html=True)
+    user_input = st.text_input("How are you feeling right now?", key="mood_input", placeholder="What's your mood vibe?")
     
     if st.button("Get Music", key="mood_btn"):
         if user_input.strip() == "":
@@ -190,13 +168,15 @@ if nav_option == "🧠 Mood AI":
                     clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
                     
                     st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">📌 {title}</a><div class="playlist-meta">Curated by {author}</div></div>', unsafe_allow_html=True)
-                    st.video(f"https://www.youtube.com/playlist?list={clean_id}")
+                    
+                    # FIX: Native standard video layout container embedding to keep playback on-page
+                    st.video(f"https://www.youtube.com/watch?v=videoseries&list={clean_id}")
             except Exception as e:
                 st.error(f"Error: {e}")
 
 elif nav_option == "🔍 Search Tracks/Movies":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>Search</h1>", unsafe_allow_html=True)
-    search_term = st.text_input("Search for songs or movies...", key="track_input", placeholder="Artists, songs, or podcasts")
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🔍 Search Tracks & Movies</h1>", unsafe_allow_html=True)
+    search_term = st.text_input("Search for songs or movies...", key="track_input", placeholder="What do you want to listen to?")
     
     if st.button("Search Track", key="track_btn"):
         if search_term.strip():
@@ -209,13 +189,14 @@ elif nav_option == "🔍 Search Tracks/Movies":
                     
                     st.markdown(f'<div class="playlist-card"><span class="playlist-title">🎵 {song["title"]}</span><div class="playlist-meta">{artists} • {album}</div></div>', unsafe_allow_html=True)
                     if video_id:
+                        # FIX: Native player call forcing local iframe rendering
                         st.video(f"https://www.youtube.com/watch?v={video_id}")
             except Exception as e:
                 st.error(f"Error: {e}")
 
 elif nav_option == "🧑‍🎤 Artist Search":
-    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>Artist Profiles</h1>", unsafe_allow_html=True)
-    artist_term = st.text_input("Search for an artist...", key="artist_input", placeholder="Who do you want to listen to?")
+    st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🧑‍🎤 Artist Profiles</h1>", unsafe_allow_html=True)
+    artist_term = st.text_input("Search for an artist...", key="artist_input", placeholder="Enter artist name...")
     
     if st.button("Find Artist Tracks", key="artist_btn"):
         if artist_term.strip():
@@ -231,17 +212,16 @@ elif nav_option == "🧑‍🎤 Artist Search":
 
 elif nav_option == "🔥 Indian Trending":
     st.markdown("<h1 style='font-size: 32px; font-weight: 800;'>🔥 Hot Hits India</h1>", unsafe_allow_html=True)
-    st.write("Catch up on the most popular trending charts across languages:")
     
     languages = {
-        "Hindi / Bollywood": "Hindi Trending Hits New Songs Playlist",
-        "Punjabi": "Punjabi Latest Hits Trending Playlist",
-        "Tamil": "Tamil Trending New Songs Playlist",
-        "Telugu": "Telugu Latest Hits Trending Playlist",
-        "Marathi": "Marathi Trending Hits New Songs Playlist",
-        "Kannada": "Kannada Latest Hits Trending Playlist",
-        "Malayalam": "Malayalam Trending New Songs Playlist",
-        "Bhojpuri": "Bhojpuri New Trending Hits Playlist"
+        "Hindi / Bollywood": "Trending Music Hindi YouTube Music",
+        "Punjabi": "Trending Music Punjabi YouTube Music",
+        "Tamil": "Trending Music Tamil YouTube Music",
+        "Telugu": "Trending Music Telugu YouTube Music",
+        "Marathi": "Trending Music Marathi YouTube Music",
+        "Kannada": "Trending Music Kannada YouTube Music",
+        "Malayalam": "Trending Music Malayalam YouTube Music",
+        "Bhojpuri": "Trending Music Bhojpuri YouTube Music"
     }
     
     selected_lang = st.selectbox("Select Language Market", list(languages.keys()))
@@ -254,7 +234,7 @@ elif nav_option == "🔥 Indian Trending":
                 clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
                 
                 st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">🔊 Hot Hits {selected_lang}</a></div>', unsafe_allow_html=True)
-                st.video(f"https://www.youtube.com/playlist?list={clean_id}")
+                st.video(f"https://www.youtube.com/watch?v=videoseries&list={clean_id}")
             else:
                 st.info("Chart parsing unavailable right now.")
         except Exception as e:
