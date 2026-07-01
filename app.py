@@ -12,35 +12,39 @@ yt = get_yt_client()
 # 1. Page Configuration
 st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="wide")
 
-# 2. Refined Spotify Design Theme CSS
+# 2. Advanced Layout Override (Eliminates hidden top margins)
 st.markdown("""
     <style>
-    /* Absolute global theme properties */
+    /* Force full-screen background black reset */
     .stApp {
         background-color: #000000 !important;
         color: #FFFFFF !important;
         font-family: "Circular Sp", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     
-    /* Safely hide header elements without breaking internal layouts */
+    /* Completely disable Streamlit's built-in header space */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], #stDecoration {
-        background-color: rgba(0, 0, 0, 0) !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
+        display: none !important;
+        height: 0px !important;
+        opacity: 0 !important;
     }
     
-    /* Reset main page container default excessive top padding padding */
+    /* Wipe top padding out of all main system layout containers */
     .stMainBlockContainer, [data-testid="stAppViewBlockContainer"], .block-container {
-        padding-top: 15px !important;
+        padding-top: 0px !important;
+        margin-top: 0px !important;
     }
     
-    /* Custom Sidebar Left Panel Overrides */
+    /* Shift the content card straight to the top of the browser window */
+    [data-testid="stVerticalBlock"] {
+        gap: 0rem !important;
+    }
+
+    /* Left Navigation Panel Styling Customizations */
     [data-testid="stSidebar"] {
         background-color: #000000 !important;
         border-right: 1px solid #121212;
     }
-    
     [data-testid="stSidebarNav"] { display: none; } 
 
     /* Brightens the unselected navigation label radio buttons so they are NOT camouflaged */
@@ -56,13 +60,13 @@ st.markdown("""
         color: #1DB954 !important;
     }
 
-    /* Main Content Area Panel - Pulls content up to overlap empty header padding safely */
+    /* Main Content Area Panel Layout Adjustments */
     .main-panel-box {
         background-color: #121212 !important;
         border-radius: 8px;
         padding: 30px;
-        min-height: 88vh;
-        margin-top: -50px !important; /* Safely offsets the empty header gap */
+        min-height: 95vh;
+        margin-top: 5px !important; 
     }
 
     /* Spotify pill inputs */
