@@ -13,38 +13,41 @@ yt = get_yt_client()
 st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="wide")
 
 # 2. Advanced Layout Override (Eliminates hidden top margins)
+# 2. Complete CSS Layout Fix
 st.markdown("""
     <style>
-    /* Force full-screen background black reset */
+    /* Absolute global theme properties */
     .stApp {
         background-color: #000000 !important;
         color: #FFFFFF !important;
         font-family: "Circular Sp", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     
-    /* Completely disable Streamlit's built-in header space */
+    /* 1. COMPLETELY REMOVE NATIVE HEADER BLOCKS */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], #stDecoration {
         display: none !important;
+        visibility: hidden !important;
         height: 0px !important;
-        opacity: 0 !important;
+        padding: 0px !important;
     }
     
-    /* Wipe top padding out of all main system layout containers */
-    .stMainBlockContainer, [data-testid="stAppViewBlockContainer"], .block-container {
-        padding-top: 0px !important;
+    /* 2. ZERO OUT THE ROOT CONTENT PADDING AND GAP */
+    .block-container, [data-testid="stAppViewBlockContainer"] {
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
         margin-top: 0px !important;
     }
     
-    /* Shift the content card straight to the top of the browser window */
     [data-testid="stVerticalBlock"] {
         gap: 0rem !important;
     }
-
-    /* Left Navigation Panel Styling Customizations */
+    
+    /* Custom Sidebar Left Panel Wrapper Overrides */
     [data-testid="stSidebar"] {
         background-color: #000000 !important;
         border-right: 1px solid #121212;
     }
+    
     [data-testid="stSidebarNav"] { display: none; } 
 
     /* Brightens the unselected navigation label radio buttons so they are NOT camouflaged */
@@ -60,13 +63,13 @@ st.markdown("""
         color: #1DB954 !important;
     }
 
-    /* Main Content Area Panel Layout Adjustments */
+    /* Main Content Area Container Panel adjustments */
     .main-panel-box {
         background-color: #121212 !important;
         border-radius: 8px;
         padding: 30px;
         min-height: 95vh;
-        margin-top: 5px !important; 
+        margin-top: 15px !important; /* Clean visual spacing from top screen edge */
     }
 
     /* Spotify pill inputs */
