@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from ytmusicapi import YTMusic
 from textblob import TextBlob
 
@@ -115,6 +116,20 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Helper function to embed playlists using an iframe safely
+def embed_youtube_playlist(playlist_id):
+    iframe_code = f"""
+    <iframe width="100%" height="450" 
+        src="https://www.youtube.com/embed/videoseries?list={playlist_id}" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen
+        style="border-radius: 12px;">
+    </iframe>
+    """
+    components.html(iframe_code, height=460)
+
 # ==================== NAVIGATION PANEL (SIDEBAR) ====================
 with st.sidebar:
     st.markdown("<h1 style='color: #1DB954; padding: 15px 0px; font-size: 46px; font-weight: 900; margin-bottom: 10px;'>⚡ Moodify</h1>", unsafe_allow_html=True)
@@ -163,14 +178,13 @@ if nav_option == "🧠 Mood AI":
                     author = playlist.get('author', 'YouTube Music')
                     clean_id = playlist.get('browseId')
                     
-                    # Ensure playlist prefixing is correct for the standard youtube domain structure
                     if clean_id.startswith('VL'):
                         clean_id = clean_id[2:]
                         
                     st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">📌 {title}</a><div class="playlist-meta">Curated by {author}</div></div>', unsafe_allow_html=True)
                     
-                    # UPDATED EMBED LINK FORMULA FOR PLAYLISTS
-                    st.video(f"https://www.youtube.com/playlist?list={clean_id}")
+                    # Use the upgraded iframe component helper
+                    embed_youtube_playlist(clean_id)
             except Exception as e:
                 st.error(f"Error: {e}")
 
@@ -237,8 +251,8 @@ elif nav_option == "🔥 Indian Trending":
                 
                 st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">🔊 Hot Hits {selected_lang}</a></div>', unsafe_allow_html=True)
                 
-                # UPDATED EMBED LINK FORMULA FOR PLAYLISTS
-                st.video(f"https://www.youtube.com/playlist?list={clean_id}")
+                # Use the upgraded iframe component helper
+                embed_youtube_playlist(clean_id)
             else:
                 st.info("Chart parsing unavailable right now.")
         except Exception as e:
