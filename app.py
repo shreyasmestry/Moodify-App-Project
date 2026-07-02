@@ -12,14 +12,9 @@ yt = get_yt_client()
 # 1. Page Configuration
 st.set_page_config(page_title="Moodify Pro", page_icon="⚡", layout="wide")
 
-# 2. Seamless Theme Fusion CSS (The Final Fix)
+# 2. Seamless Theme Fusion CSS 
 st.markdown("""
     <style>
-    /* THE UNIFIED BACKGROUND STRATEGY:
-       Instead of hiding blocks which causes Streamlit to recalculate layout spacing gaps,
-       we force EVERY layout layer in the application to use your core panel color (#121212).
-       This guarantees that unwanted black gaps or blocks vanish completely.
-    */
     html, body, .stApp, 
     [data-testid="stAppViewContainer"], 
     [data-testid="stAppViewBlockContainer"], 
@@ -31,13 +26,11 @@ st.markdown("""
         font-family: "Circular Sp", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
-    /* Clean up the top layout spacing safely */
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 2rem !important;
     }
 
-    /* Seamlessly blend the native header area background */
     header, [data-testid="stHeader"], [data-testid="stToolbar"] {
         background-color: rgba(0,0,0,0) !important;
         background: transparent !important;
@@ -48,14 +41,12 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Left Navigation Panel Styling Customizations */
     [data-testid="stSidebar"] {
         background-color: #000000 !important;
         border-right: 1px solid #1c1c1c;
     }
     [data-testid="stSidebarNav"] { display: none; } 
 
-    /* Brightens the unselected navigation label radio buttons */
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {
         color: #E5E5E5 !important;
         font-size: 15px !important;
@@ -63,17 +54,14 @@ st.markdown("""
         padding: 6px 0px !important;
     }
     
-    /* Focus state indicator for selected item text */
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] [data-checked="true"] label {
         color: #1DB954 !important;
     }
 
-    /* Main Container layout settings */
     .main-panel-box {
         width: 100%;
     }
 
-    /* Spotify pill inputs */
     .stTextInput input {
         background-color: #2a2a2a !important;
         color: #FFFFFF !important;
@@ -83,7 +71,6 @@ st.markdown("""
         font-size: 14px !important;
     }
     
-    /* True Spotify Green Buttons */
     .stButton>button {
         background-color: #1DB954 !important;
         color: #000000 !important;
@@ -100,7 +87,6 @@ st.markdown("""
         color: #000000 !important;
     }
     
-    /* Track Album Row Cards Container elements */
     .playlist-card {
         background-color: #181818;
         border-radius: 6px;
@@ -159,13 +145,13 @@ if nav_option == "🧠 Mood AI":
             polarity = analysis.sentiment.polarity
             
             if polarity < -0.1:
-                search_query = "sad acoustic rainy day music playlist"
+                search_query = "sad acoustic rainy day mix"
                 status_msg = "💎 Finding something reflective and comforting..."
             elif polarity > 0.1:
-                search_query = "upbeat high energy party dance music playlist"
+                search_query = "upbeat high energy party dance mix"
                 status_msg = "🔥 Finding something to boost the vibes!"
             else:
-                search_query = "lofi chill ambient relaxed music playlist"
+                search_query = "lofi chill ambient relaxed mix"
                 status_msg = "☕ Finding a relaxed, mellow soundtrack..."
                 
             st.markdown(f"<p style='color: #1DB954; font-weight: bold; font-size: 14px;'>{status_msg}</p>", unsafe_allow_html=True)
@@ -175,10 +161,16 @@ if nav_option == "🧠 Mood AI":
                 for playlist in results:
                     title = playlist.get('title', 'Mood Mix')
                     author = playlist.get('author', 'YouTube Music')
-                    clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
+                    clean_id = playlist.get('browseId')
                     
+                    # Ensure playlist prefixing is correct for the standard youtube domain structure
+                    if clean_id.startswith('VL'):
+                        clean_id = clean_id[2:]
+                        
                     st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">📌 {title}</a><div class="playlist-meta">Curated by {author}</div></div>', unsafe_allow_html=True)
-                    st.video(f"https://www.youtube.com/watch?v=videoseries&list={clean_id}")
+                    
+                    # UPDATED EMBED LINK FORMULA FOR PLAYLISTS
+                    st.video(f"https://www.youtube.com/playlist?list={clean_id}")
             except Exception as e:
                 st.error(f"Error: {e}")
 
@@ -221,14 +213,14 @@ elif nav_option == "🔥 Indian Trending":
     st.markdown("<h1 style='font-size: 32px; font-weight: 800; margin-bottom: 20px;'>🔥 Hot Hits India</h1>", unsafe_allow_html=True)
     
     languages = {
-        "Hindi / Bollywood": "Trending Music Hindi YouTube Music",
-        "Punjabi": "Trending Music Punjabi YouTube Music",
-        "Tamil": "Trending Music Tamil YouTube Music",
-        "Telugu": "Trending Music Telugu YouTube Music",
-        "Marathi": "Trending Music Marathi YouTube Music",
-        "Kannada": "Trending Music Kannada YouTube Music",
-        "Malayalam": "Trending Music Malayalam YouTube Music",
-        "Bhojpuri": "Trending Music Bhojpuri YouTube Music"
+        "Hindi / Bollywood": "Trending Music Hindi",
+        "Punjabi": "Trending Music Punjabi",
+        "Tamil": "Trending Music Tamil",
+        "Telugu": "Trending Music Telugu",
+        "Marathi": "Trending Music Marathi",
+        "Kannada": "Trending Music Kannada",
+        "Malayalam": "Trending Music Malayalam",
+        "Bhojpuri": "Trending Music Bhojpuri"
     }
     
     selected_lang = st.selectbox("Select Language Market", list(languages.keys()))
@@ -238,10 +230,15 @@ elif nav_option == "🔥 Indian Trending":
             trend_results = yt.search(languages[selected_lang], filter="playlists", limit=1)
             if trend_results:
                 playlist = trend_results[0]
-                clean_id = playlist.get('browseId').replace('VL', '') if playlist.get('browseId').startswith('VL') else playlist.get('browseId')
+                clean_id = playlist.get('browseId')
+                
+                if clean_id.startswith('VL'):
+                    clean_id = clean_id[2:]
                 
                 st.markdown(f'<div class="playlist-card"><a href="https://music.youtube.com/playlist?list={clean_id}" target="_blank" class="playlist-title">🔊 Hot Hits {selected_lang}</a></div>', unsafe_allow_html=True)
-                st.video(f"https://www.youtube.com/watch?v=videoseries&list={clean_id}")
+                
+                # UPDATED EMBED LINK FORMULA FOR PLAYLISTS
+                st.video(f"https://www.youtube.com/playlist?list={clean_id}")
             else:
                 st.info("Chart parsing unavailable right now.")
         except Exception as e:
